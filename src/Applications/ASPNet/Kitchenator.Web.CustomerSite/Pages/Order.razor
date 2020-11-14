@@ -1,0 +1,145 @@
+﻿@page "/order"
+@using Kitchenator.Web.CustomerSite.Models;
+
+<h1 style="font-family: 'chiller'; font-size: 72px; color: maroon">Get your tacos!</h1>
+<hr />
+
+<h3 class="card-subtitle">We know, we know, you're hungry and need them right now!</h3>
+<hr />
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label>
+            What kind of Taco do you want?:
+            <select class="form-control" @bind="orderTacoModel.Name">
+                <option>--select--</option>
+                @foreach(var taco in Tacos)
+                {
+                    <option value="@taco.Name">@taco.Name</option>
+                }
+            </select>            
+        </label>
+    </p>
+
+    <p>
+        <label>
+            How many do you need?
+            <InputNumber @bind-Value="orderTacoModel.Quantity" />
+        </label>
+    </p>
+    <button class="btn btn-warning" type="submit">Hit it</button>
+</EditForm>
+<hr />
+<div class="@visibility">
+    <h3>What we've got for you so far:</h3>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Dish</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Item Price</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in tacosOnOrder)
+            {
+
+                <tr>
+                    <td><b>@order.Name</b></td>
+                    <td>@order.Quantity</td>
+                    <td>Kr.@order.Price.ToString("### ###.0")</td>
+                    <td>Kr.@order.Sum.ToString("### ###.0")</td>
+                    <td><button class="btn btn-danger" @onclick="@(() => RemoveThis(order))" >regret!</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        <div class="alert alert-primary">Order total: Kr. @OrderTotal.ToString("### ###.0")</div>
+    <h1 />
+    <button class="btn btn-primary" @onclick="@ExecuteOrder">Take my cash and make it happen!</button>
+</div>
+
+@code {
+    private static Random random               = new Random((int)DateTime.Now.Ticks);
+    private EditContext editContext;
+    private OrderTacoModel orderTacoModel      = SetupNewTacoModel();
+    private IList<Taco> Tacos                  = CreateTacoMenu();
+    private IList<OrderTacoModel> tacosOnOrder = new List<OrderTacoModel>();    
+    private string visibility                  = "collapse";
+    private decimal OrderTotal                 = 0;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(orderTacoModel);
+    }
+
+    private static IList<Taco> CreateTacoMenu()
+    {
+        return new List<Taco>
+        {
+            new Taco{ Name = "Wonda's Wonderful Woes" },
+            new Taco{ Name = "Bam! Bam! Thank you M'am!" },
+            new Taco{ Name = "Tore on the Eggen" },
+            new Taco{ Name = "Mad Manny's Moe" },
+            new Taco{ Name = "Supreme Barkenspire" },
+            new Taco{ Name = "The Original Terrible Taco" },
+            new Taco{ Name = "Vedgy Freddy's meatless feast" },
+            new Taco{ Name = "Fisher's taco" },
+            new Taco{ Name = "Oily Tenticles Taco" },
+        };
+    }
+
+    private void RemoveThis(OrderTacoModel order)
+    {
+        if(tacosOnOrder.Contains(order))
+        {
+            tacosOnOrder.Remove(order);
+            OrderTotal = tacosOnOrder.Sum(t => t.Sum);
+            if(OrderTotal == 0)
+            {
+                visibility = "collapse";
+            }
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        var orderIsValid = editContext.Validate();
+        if (orderIsValid)
+        {
+            orderTacoModel.Sum = orderTacoModel.Price * orderTacoModel.Quantity;
+            tacosOnOrder.Add(orderTacoModel);
+            orderTacoModel = SetupNewTacoModel();
+            editContext = new EditContext(orderTacoModel);
+            IsPlaceOrderDisabled = tacosOnOrder.Any() ? false : true;
+            if(!IsPlaceOrderDisabled)
+            {
+                visibility = "";
+            }
+            else
+            {
+                visibility = "collapse";
+            }
+            OrderTotal = tacosOnOrder.Sum(t => t.Sum);
+        }
+    }
+
+    public bool IsPlaceOrderDisabled { get; set; }
+
+    private void ExecuteOrder()
+    {
+        OrderTotal       = 0;
+        tacosOnOrder     = new List<OrderTacoModel>();
+        visibility = "collapse";
+    }
+
+    private static OrderTacoModel SetupNewTacoModel()
+    {
+        return new OrderTacoModel { OrderDate = DateTime.Now, Price = random.Next(75, 150) };
+
+    }
+}

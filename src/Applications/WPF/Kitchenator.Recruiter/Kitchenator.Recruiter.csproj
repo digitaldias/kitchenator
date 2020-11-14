@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>    
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lamar" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\kitchenator.business\kitchenator.business.csproj" />
+    <ProjectReference Include="..\..\..\Common\kitchenator.Domain\kitchenator.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Common\Kitchenator.Wpf.Common\Kitchenator.Wpf.Common.csproj" />
+    <ProjectReference Include="..\..\..\Data\kitchenator.data.azure\kitchenator.data.azure.csproj" />
+  </ItemGroup>
+
+</Project>

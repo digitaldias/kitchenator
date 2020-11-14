@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../versions.props" />
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>bf16474d-ac19-4a94-90da-cdffbb329877</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dolittle.SDK" Version="$(DolittleSDKVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+  </ItemGroup>
+  
+</Project>

@@ -1,0 +1,128 @@
+﻿@page "/addRealestate"
+@using Kitchenator.Web.PropertyManager.Data;
+@using kitchenator.Domain.Contracts.Managers; 
+@using kitchenator.Domain.Contracts;
+@using kitchenator.Domain.Concepts.Addresses; 
+@inject BackendConnector backendConnector
+@inject NavigationManager NavigationManager
+@inject ICountriesLoader CountriesLoader
+
+<h1 style="font-family: Chiller; font-size: 56pt;">Add a new place to eat!</h1>
+<div class="alert alert-primary">@statusText</div>
+
+<EditForm EditContext="@editContext" OnValidSubmit="@HandleRestaurantSubmission">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table class="table">
+        <tr>
+            <td>Restaurant Name:</td>
+            <td><InputText id="name" @bind-Value="addRestaurantRequest.Name" /></td>
+        </tr>
+
+        <tr>
+            <td>Country:</td>
+            <td><InputSelect @bind-Value="SelectedCountryCode">
+                    <option value="">Select Country</option>
+                    @if(CountriesLoader.Countries is { })
+                    {
+                        @foreach(var country in CountriesLoader?.Countries)
+                        {
+                            <option value="@country.CountryCode.Value">@country.CountryName.Value</option>
+                        }
+                    }
+                </InputSelect></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td><InputSelect id="city" @bind-Value="SelectedCityName">
+                    <option value="">Select City</option>
+                @if(_selectedCountry is { })
+                {
+                    foreach(var city in _selectedCountry.Cities)
+                    {
+                        <option value="@city.CityName.Value">@city.CityName.Value</option>
+                    }
+                }
+                </InputSelect>
+            </td>
+        </tr>
+        <tr>
+            <td>Number of Chefs capacity:</td>
+            <td><InputNumber id="chefCapacity" @bind-Value="addRestaurantRequest.ChefCapacity" /></td>
+        </tr>
+        <tr>
+            <td>Monthly Rent:</td>
+            <td>€&nbsp;<InputNumber id="monthlyRent" @bind-Value="addRestaurantRequest.MonthlyRent" /></td>
+        </tr>
+    </table>
+    <button class="btn btn-danger" type="submit">Add Realestate</button>
+</EditForm>
+
+@code 
+{
+    private string _selectedCountryCode  = String.Empty;
+    private Country _selectedCountry     = null;
+    private string _selectedCityName     = String.Empty;
+
+
+    private AddRestaurantRequest addRestaurantRequest = new AddRestaurantRequest();
+    private EditContext editContext;
+    private string statusText;
+
+    private string SelectedCountryCode
+    {
+        get { return _selectedCountryCode; }
+        set
+        {
+            _selectedCountryCode = value;
+            if(!string.IsNullOrEmpty(_selectedCountryCode))
+            {
+                _selectedCountry = CountriesLoader.Countries.First(c => c.CountryCode.Value.Equals(_selectedCountryCode, StringComparison.InvariantCultureIgnoreCase));
+            }
+            else
+            {
+                SelectedCityName = String.Empty;
+                _selectedCountry = null;
+            }
+        }
+    }
+
+    private string SelectedCityName
+    {
+        get { return _selectedCityName; }
+        set
+        {
+            _selectedCityName = value;
+            if(!string.IsNullOrEmpty(_selectedCityName))
+            {
+                addRestaurantRequest.City = _selectedCountry.Cities.First(c => c.CityName.Value.Equals(_selectedCityName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            else
+            {
+                addRestaurantRequest.City = null;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await (CountriesLoader as IMustBeInitialized).Initialize();
+    }
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(addRestaurantRequest);
+    }
+
+    private async Task HandleRestaurantSubmission()
+    {
+        if (!editContext.Validate())
+            return;
+
+        var success = await backendConnector.AddRestaurant(addRestaurantRequest);
+        if(success)
+            NavigationManager.NavigateTo("/listRestaurants");
+
+        statusText = "Hey! That didn't work very well!!";
+    }
+}

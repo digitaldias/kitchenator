@@ -1,0 +1,128 @@
+﻿<Window x:Class="Kitchenator.Recruiter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kitchenator.Recruiter"
+        mc:Ignorable="d"
+        Title="Kitechnator Recruiter" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate x:Key="ChefToListTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Surname}" Grid.Column="0" Foreground="White" />
+                    <TextBlock Text="{Binding Name}"    Grid.Column="1" Foreground="White" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Background="DarkOrange">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        
+        <!-- TITLE AREA -->
+        <TextBlock 
+            Text="Terrible Tacos Chef Recruitment App"
+            FontFamily="Chiller"
+            FontSize="58"
+            Foreground="Maroon"
+            Margin="10 0"
+            HorizontalAlignment="Center"
+            >
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="3" ShadowDepth="2"/>
+            </TextBlock.Effect>
+        </TextBlock>
+
+        <!-- BODY AREA -->
+        <Grid Grid.Row="1" Background="#212121" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Hired Chefs:"
+                       Foreground="Orange"
+                       />
+
+            <ListView Grid.Row="1"
+                      Background="Transparent"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding HiredChefs}"
+                      SelectedItem="{Binding SelectedChef, Mode=TwoWay}"
+                      >
+                
+            </ListView>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+                <Button Content="Fire!" Command="{Binding FireCommand}" Margin="5 0" Width="100" Height="24" />
+            </StackPanel>
+            
+            <!-- Right side Details -->
+            <Border Grid.Column="1" 
+                  Grid.Row="1"
+                  BorderBrush="Silver"
+                    BorderThickness="2"
+                    CornerRadius="10"
+                    Margin="2"
+                    Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="6*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Margin="0 2" Grid.Row="0" Grid.Column="0" Text="Name" Foreground="Orange"/>
+                    <TextBox   Margin="0 2" Grid.Row="0" Grid.Column="1" Text="{Binding SelectedChef.Name}" />
+
+                    <TextBlock Margin="0 2" Grid.Row="1" Grid.Column="0" Text="Surname" Foreground="Orange"/>
+                    <TextBox   Margin="0 2" Grid.Row="1" Grid.Column="1" Text="{Binding SelectedChef.Surname}" />
+
+
+                    <Button 
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        HorizontalContentAlignment="Center"
+                        Content="Hire!" 
+                        Command="{Binding HireCommand}"                         
+                        Width="80" 
+                        Height="24" />
+                </Grid>
+                
+            </Border>
+        </Grid>
+
+        <!-- LOWER AREA -->
+        <Button 
+            Grid.Row="2"
+            Margin="10 0"
+            Height="24"
+            Width="100"
+            HorizontalAlignment="Right"
+            Content="Close" Command="{Binding CloseCommand}" />
+    </Grid>
+</Window>

@@ -1,0 +1,57 @@
+﻿@page "/dostaffing"
+@using Kitchenator.Web.PropertyManager.Data;
+@using kitchenator.Domain.Contracts.Managers;
+@using kitchenator.Domain.Concepts.Addresses;
+@using kitchenator.Domain.Concepts.Realestate;
+@using Kitchenator.Web.PropertyManager.Components;
+
+@inject IEmployeeManager employeeLoader
+@inject BackendConnector connector
+@inject NavigationManager NavigationManager
+
+<h1 style="font-family: Chiller; font-size: 56pt;">Staffing and Stuffing</h1>
+<p class="alert-info">
+    Use this page to manage all your employees, fire the bad ones, and sweeten the deal for the good ones!
+</p>
+
+<h3>Select restaurant</h3>
+<EditForm EditContext="@editContext">
+
+    <SelectCountryAndCity SelectedCountry="@selectedCountry" SelectedCity="@selectedCity" />
+    <RestaurantList SelectedRestaurant="selectedRestaurant" CityFilter="@selectedCity" CountryFilter="selectedCountry" />
+
+</EditForm>
+
+<hr />
+<h3>Employees</h3>
+
+
+@code {
+    private EditContext editContext;
+    private object dummyObject = new object();
+
+    private ViewModel<Restaurant> selectedRestaurant { get; set; }
+    private ViewModel<Country> selectedCountry { get; set; }
+    private ViewModel<City> selectedCity { get; set; }
+
+
+    protected override Task OnInitializedAsync()
+    {
+        // Grab all restaurants, we will never reach an amount that is problematic
+        selectedRestaurant = new ViewModel<Restaurant>(new Restaurant());
+        selectedCountry    = new ViewModel<Country>(new Country());
+        selectedCity       = new ViewModel<City>(new City());
+
+        selectedCountry.OnChange += (s, e) => selectedCity.Instance = null;
+        selectedRestaurant.OnChange += (s, e) =>
+        {
+            NavigationManager.NavigateTo($"/Staffing/ListEmployees/{e.Id.Value}");
+        };
+        return Task.CompletedTask;
+    }
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(dummyObject);
+    }
+}

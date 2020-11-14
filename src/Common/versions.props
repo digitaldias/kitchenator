@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>        
+        <DolittleSDKVersion>8.0.0</DolittleSDKVersion>
+    </PropertyGroup>
+</Project>

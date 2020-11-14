@@ -1,0 +1,56 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Kitchenator Inc Intl</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="order">
+                <span class="oi oi-plus" aria-hidden="true"></span> Order
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="chefs">
+                <span class="oi oi-plus" aria-hidden="true"></span> The chefs
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="popular">
+                <span class="oi oi-plus" aria-hidden="true"></span> Most popular
+            </NavLink>
+        </li>
+    </ul>
+    <hr />
+    <img src="https://www.ocregister.com/wp-content/uploads/migration/m70/m70q2z-m70q2dtacobelldoritostacosingle.jpg"
+         width="150"
+         class="rounded mx-auto d-block" 
+         />
+    <hr />
+    <p class="small">
+        <b>WARNING:</b> 
+        Consuming this product can expose you to chemicals including 
+        overdue faxytoxins, which is [are] known to to cause birth defects or other reproductive harm.  
+        For more information go to <a href="#">this link</a>.
+    </p>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

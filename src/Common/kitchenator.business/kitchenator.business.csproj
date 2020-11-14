@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../versions.props" />
+  
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dolittle.SDK" Version="$(DolittleSDKVersion)" />
+    <ProjectReference Include="..\kitchenator.Domain\kitchenator.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

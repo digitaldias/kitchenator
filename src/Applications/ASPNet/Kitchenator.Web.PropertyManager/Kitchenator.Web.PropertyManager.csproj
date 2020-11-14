@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.4.0-*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\kitchenator.business\kitchenator.business.csproj" />
+    <ProjectReference Include="..\..\..\Common\kitchenator.Domain\kitchenator.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Common\kitchenator.EventManagement\kitchenator.EventManagement.csproj" />
+    <ProjectReference Include="..\..\..\Data\kitchenator.data.azure\kitchenator.data.azure.csproj" />
+  </ItemGroup>
+
+</Project>

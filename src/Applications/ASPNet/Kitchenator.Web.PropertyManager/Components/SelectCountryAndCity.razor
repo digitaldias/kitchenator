@@ -1,0 +1,100 @@
+﻿@using kitchenator.Domain.Concepts.Addresses;
+@using kitchenator.Domain.Contracts.Managers;
+@inject ICountriesLoader countriesLoader
+
+<EditForm EditContext="@editContext">
+    <div>
+        <span>
+            <label>Select Country:</label>
+            <InputSelect @bind-Value="@countryKey">
+                <option value="">All countries</option>
+                @if (allCountries is { })
+                {
+                    @foreach (var country in allCountries)
+                    {
+                        <option value="@country.Key">@country.CountryName.Value</option>
+                    }
+                }
+            </InputSelect>
+        </span>
+
+        <span>
+            <label>... and city:</label>
+            <InputSelect @bind-Value="@cityKey">
+                <option value="">All Citites</option>
+                @if (SelectedCountry.Instance is { } && SelectedCountry.Instance.Cities is { })
+                {
+                    @foreach (var city in SelectedCountry.Instance.Cities)
+                    {
+                        <option value="@city.Key">@city.CityName.Value</option>
+                    }
+                }
+            </InputSelect>
+        </span>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public ViewModel<Country> SelectedCountry { get; set; }
+
+    [Parameter]
+    public ViewModel<City> SelectedCity { get; set; }
+
+    private EditContext editContext;
+    private object dummyModel = new object();
+
+    private List<Country> allCountries { get; set; }
+
+    private string _countryKey;
+    private string _cityKey;
+
+    private string countryKey
+    {
+        get { return _countryKey; }
+        set
+        {
+            _countryKey = value;
+            if(_countryKey?.Any() ?? false)
+            {
+                SelectedCountry.Instance = allCountries.First(c => c.Key.Equals(value));
+                cityKey = string.Empty;
+            }
+            else
+            {
+                SelectedCountry.Instance = null;
+                cityKey = string.Empty;                
+            }
+        }
+    }
+
+    private string cityKey
+    {
+        get { return _cityKey; }
+        set
+        {
+            _cityKey = value;
+            if(_cityKey?.Any() ?? false)
+            {
+                SelectedCity.Instance = SelectedCountry.Instance.Cities.First(c => c.Key.Equals(value));
+            }
+            else
+            {
+                SelectedCity.Instance = null;
+            }
+        }
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await countriesLoader.Initialize();
+        allCountries = countriesLoader.Countries.ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(dummyModel);
+    }
+}

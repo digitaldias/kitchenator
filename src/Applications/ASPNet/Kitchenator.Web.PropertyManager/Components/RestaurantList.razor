@@ -1,0 +1,96 @@
+﻿@using kitchenator.Domain.Concepts.Realestate;
+@using Kitchenator.Web.PropertyManager.Data;
+@using kitchenator.Domain.Concepts.Addresses; 
+@inject BackendConnector connector
+
+@if(_filteredRestaurants is { })
+{
+    <h3>Choose Restaurant</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Restaurant</th>
+                <th>City</th>
+                <th>Chef Capacity</th>
+                <th>Monthly Rent</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var restaurant in _filteredRestaurants)
+            {
+            <tr @onclick="@(() => SelectedRestaurant.Instance = restaurant)">
+                <td>@restaurant.Name.Value</td>
+                <td>@restaurant.City.CityName</td>
+                <td>@restaurant.ChefCapacity.Value</td>
+                <td>€@restaurant.MonthlyRent.Value.ToString("### ### ###.00")</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public ViewModel<Restaurant> SelectedRestaurant { get; set; }
+
+    [Parameter]
+    public ViewModel<Country> CountryFilter { get; set; }
+
+    [Parameter]
+    public ViewModel<City> CityFilter { get; set; }
+
+    private List<Restaurant> _restaurants;
+    private List<Restaurant> _filteredRestaurants;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _restaurants         = (await connector.GetRestaurants()).OrderBy(r => r.Name.Value).ToList();
+        _filteredRestaurants = new List<Restaurant>(_restaurants);
+
+        CityFilter.OnChange     += UpdateFilteredRestaurants;
+        CountryFilter.OnChange  += UpdateFilteredRestaurants;
+    }
+
+    private void UpdateFilteredRestaurants(object sender, Country country)
+    {
+        if(country is { })
+        {
+            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Value.Equals(country.CountryCode.Value)).ToList();
+            CityFilter.Instance  = null;
+        }
+        else
+        {
+            _filteredRestaurants = _restaurants.ToList();
+        }
+        StateHasChanged();
+    }
+
+    private void UpdateFilteredRestaurants(object sender, City city)
+    {
+        if(CountryFilter.Instance is { })
+        {
+            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Equals(CountryFilter.Instance.CountryCode)).ToList();
+            if(city is { })
+            {
+                _filteredRestaurants = _filteredRestaurants.Where(r => r.City.Key.Equals(city.Key)).ToList();
+            }
+
+            StateHasChanged();
+        }
+        else
+        {
+            _filteredRestaurants = _restaurants;
+        }
+
+    }
+
+
+    private static string GuidToShortSweetness(Restaurant restaurant)
+    {
+        var uglyGuid = restaurant.Id.Value.ToString();
+        return $"{uglyGuid.Substring(0, 5)}...";
+    }
+}

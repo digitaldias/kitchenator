@@ -1,0 +1,29 @@
+﻿@page "/Staffing/ListEmployees/{restaurantId}"
+@using kitchenator.Domain.Concepts.Realestate;
+@using Kitchenator.Web.PropertyManager.Data;
+@using kitchenator.Domain.Concepts.Addresses;
+
+@inject BackendConnector connector
+@inject NavigationManager NavigationManager
+
+@if(restaurant is { })
+{
+    <h3 style="font-family: Chiller; font-size: 24pt;">Employees list, @restaurant.Name.Value, @restaurant.City.CityName.Value</h3>
+    <div class="border-info">
+
+    </div>
+}
+
+@code
+{    
+    [Parameter]
+    public string restaurantId { get; set; }
+
+    private Restaurant restaurant;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        restaurant = await connector.GetRestaurantById(restaurantId);        
+    }
+}
