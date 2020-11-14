@@ -1,4 +1,4 @@
-<img src="../doc/images/taco.png" width="200px" alt="Terrible Taco" style="float:left;"></img>
+<img src="./doc/images/taco.png" width="200px" alt="Terrible Taco" style="float:left;"></img>
 # The Kitchenator
 This is a sample playground project used to explore the Dolittle platform. 
 It builds and expands on the tutorial [found here](https://dolittle.io/tutorials/getting-started/csharp/). 
@@ -52,8 +52,8 @@ The solution *ASSUMES* that the two tables exist in your Azure Table Storage, an
 
 
 For convenience, you can populate the two tables using the following CSV files
-- [countries.csv](../doc/datafiles/countries.csv)
-- [cities.csv](../doc/datafiles/cities.csv)
+- [countries.csv](./doc/datafiles/countries.csv)
+- [cities.csv](./doc/datafiles/cities.csv)
 
 You can do this using a tool such as [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
 
