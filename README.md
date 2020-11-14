@@ -87,7 +87,10 @@ Before debugging, make sure that the Dolittle runtime is active:
 - Execute `$> docker run -p 50053:50053 -p 27017:27017 dolittle/runtime:latest-development` before debugging. This will start the Dolittle Runtime and other required services. 
 
 For example: 
-To run the 
+To run the Property Management WebSite, you need to: 
+- [x] Have the dolittle runtime running in the background
+- [ ] Have the `Kitchenator.PropertyService` WebApi running (found in *10 Backend Services* folder)
+- [ ] Have the `Kitchenator.Web.PropertyManager` WebApp running (found in *00 Presentation Layer\20 Web* folder)
 
 ---- 
 
