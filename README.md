@@ -92,3 +92,33 @@ To run the
 ---- 
 
 ## Project contributions
+Yes! The more, the merrier!<br />
+In the interest of fostering an open and welcoming environment, 
+contributors and maintainers must pledge to making participation in this project 
+a harassment-free experience for everyone, regardless of age, body size, disability, 
+ethnicity, gender identity and expression, level of experience, nationality, personal appearance, 
+race, religion, or sexual identity and orientation.
+
+### Standards
+* Use welcoming and inclusive language
+* Be respectful of differing viewpoints 
+* Accept constructive criticism gracefully
+* Show empathy towards other project members
+
+Examples of unacceptable behavior by participants include: 
+* Use of sexual language or imagery as well as unwelcome sexual attention or advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing other's private information, such as physical or electronic address without explicit permission
+* Other conduct that could reasonably be considered inappropriate in a professional setting
+
+### Enforcement
+All complaints will be reviewed and investigated and will result in a response that is deemed necessary 
+and appropriate to the circumstances. 
+The project team is obligated to maintain confidentiality with regard to the reporter of an incident. 
+Further details of specific enforcement policies may be posted separately.
+
+Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
+
+### Attribution
+This Code of Conduct was adapted from the Contributor Covenant, version 1.4, available at http://contributor-covenant.org/version/1/4
