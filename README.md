@@ -25,10 +25,9 @@ utilize the new stuff.
 ### Your first run
 In order to fully appreciate this application, you should start running the applications in the following order: 
 
-- [ ] Populate the countries and cities tables with some data
 - [ ] Run the Property Manager to create a few Restaurants
 - [ ] Add staffing to those restaurants by hiring people
-- [ ] Add a few Taco-dishes to the menu
+- [ ] Add a few Taco-dishes to the menu (Currently missing a dish creation app!)
 - [ ] Start taking orders
 - [ ] Monitor the orders coming in on the Monitoring Application
 
@@ -41,6 +40,7 @@ In order to fully appreciate this application, you should start running the appl
 - [Docker](https://www.docker.com/products/docker-desktop) must be installed on your computer. 
 - Using [Project Tye](https://github.com/dotnet/tye) will help you greatly during development. <br /> `$> tye run --port 8083 --dashboard --watch`
 - A valid `Azure Storage Account` for storing readmodels.
+  - Pre-populated countries and cities tables
 
 ## Setting up Countries and Cities
 The solution *ASSUMES* that the two tables exist in your Azure Table Storage, and are populated:
