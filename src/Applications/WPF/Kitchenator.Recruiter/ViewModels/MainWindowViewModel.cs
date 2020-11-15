@@ -4,7 +4,6 @@ using kitchenator.Domain.Concepts.Addresses;
 using kitchenator.Domain.Concepts.Employees;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
-using kitchenator.Domain.Contracts.Readers;
 using kitchenator.Domain.Events.Employment;
 using Kitchenator.Wpf.Common;
 using PubSub;
@@ -19,22 +18,18 @@ using System.Windows.Input;
 namespace Kitchenator.Recruiter.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
-    {
-        readonly IEmployeeReader       _chefReader;
+    {        
         readonly ICountriesLoader  _countriesLoader;
         private  List<Country>     _countries;
         ObservableCollection<Employee> _hiredChefs;
         Employee                       _selectedChef;
         RelayCommand               _hireCommand;
-        Client                     _dolittleClient;
 
         public MainWindowViewModel(Window owningWindow, Hub hub)
             : base(owningWindow, hub)
         {
-            _hiredChefs     = new ObservableCollection<Employee>();
-            _chefReader     = App.DependencyResolver.GetInstance<IEmployeeReader>();
-            _countriesLoader  = App.DependencyResolver.TryGetInstance<ICountriesLoader>();
-            _dolittleClient = BuildDolittleClient();
+            _hiredChefs     = new ObservableCollection<Employee>();            
+            _countriesLoader  = App.DependencyResolver.TryGetInstance<ICountriesLoader>();            
             _selectedChef   = new Employee();
             
             owningWindow.Loaded += async(s, e) =>  await OwningWindow_Loaded(s, e);
@@ -73,21 +68,13 @@ namespace Kitchenator.Recruiter.ViewModels
                 return;
 
             SelectedChef.Id = Guid.NewGuid();
-            //var chefCreated = new ChefCreated(SelectedChef);
-            //await _dolittleClient.EventStore
-            //    .ForTenant(TenantId.Development)
-            //    .Commit(chefCreated, chefCreated.EmployeeId);
             await Task.CompletedTask;
         }
 
 
 
         private async Task OwningWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var chefs  = await _chefReader.GetAll();
-            HiredChefs = new ObservableCollection<Employee>(chefs);
-
-
+        {            
             var initializer = _countriesLoader as IMustBeInitialized;
             await initializer.Initialize();
 
