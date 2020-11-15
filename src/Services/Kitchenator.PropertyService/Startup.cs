@@ -51,7 +51,7 @@ namespace Kitchenator.PropertyService
             services.AddHealthChecks();
             services.AddControllers();
             services.AddSingleton<IRealestateManager, RealestateManager>();
-            services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.RealEstate>, RestaurantRepo<IBoundedContext.RealEstate>>();
+            services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.Realestate>, RestaurantRepo<IBoundedContext.Realestate>>();
 
             services.AddDolittleClient(TenantId.Development, () =>
             {

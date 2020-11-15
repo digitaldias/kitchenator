@@ -30,7 +30,9 @@ namespace Kitchenator.Web.PropertyManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddSingleton<IModelReaderFor<Restaurant, IBoundedContext.Employment>, RestaurantRepo<IBoundedContext.Employment>>();
+            //TODO: This is ugly, how do we get around it?
+            services.AddSingleton<IModelReaderFor<Restaurant, IBoundedContext.Realestate>, RestaurantRepo<IBoundedContext.Realestate>>();            
+
             services.AddSingleton<IEmployeeManager,   EmployeeManager>();
             services.AddSingleton<ICityReader,        CityReader>();
             services.AddSingleton<ICountriesReader,   CountriesReader>();
