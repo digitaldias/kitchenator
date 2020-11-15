@@ -5,6 +5,7 @@ using Dolittle.SDK.Events.Store;
 using Dolittle.SDK.Tenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -62,7 +63,7 @@ namespace Dolittle.AspNET.ConfigurationExtensions
             }
 
             client
-                .WithContainer(new DolittleAspNetContainer(builder.ApplicationServices))
+                .WithContainer(new DolittleAspNetContainer(builder.ApplicationServices, builder.ApplicationServices.GetService<ILogger<DolittleAspNetContainer>>()))
                 .Start();
 
             return builder;
