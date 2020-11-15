@@ -6,6 +6,7 @@ using Dolittle.SDK.Tenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Dolittle.AspNET.ConfigurationExtensions
 {
@@ -14,6 +15,8 @@ namespace Dolittle.AspNET.ConfigurationExtensions
     /// </summary>
     public static class ClientBuilderExtensions
     {
+        private static TaskAwaiter _runningDolittleClient;
+
         /// <summary>
         /// Runs the provided Dolittle client builder expression and adds it to services as a Singleton. <br />
         /// 
@@ -56,15 +59,13 @@ namespace Dolittle.AspNET.ConfigurationExtensions
             if (client is null)
             {
                 throw new DolittleClientNotFoundInServiceCollection();
-            }                 
+            }
 
-            client                
+            client
                 .WithContainer(new DolittleAspNetContainer(builder.ApplicationServices))
                 .Start();
 
             return builder;
         }
-
-
     }
 }
