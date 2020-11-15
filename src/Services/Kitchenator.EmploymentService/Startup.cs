@@ -40,16 +40,16 @@ namespace Kitchenator.EmploymentService
             {
                 var settings = MicroserviceConfiguration.Dolittle;
                 return Client.ForMicroservice(settings.ServiceId)
-                 .WithEventTypes(config =>
-                 {
-                     config.Register<HireNewEmployee>();
-                     config.Register<RestaurantCreated>();
-                 })
-                .WithEventHandlers(config =>
-                {
-                    config.RegisterEventHandler<EmployeeEventHandler>();
+                    .WithRuntimeOn(settings.HostName, settings.HostPort)
+                    .WithEventTypes(config =>
+                    {                     
+                        config.Register<RestaurantCreated>();
+                    })
+                    .WithEventHandlers(config =>
+                    {
                     config.RegisterEventHandler<RestaurantEventHandler>();
-                }).Build();
+                    })
+                    .Build();
             });
         }
 
