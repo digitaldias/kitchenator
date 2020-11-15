@@ -33,9 +33,14 @@ namespace Kitchenator.EmploymentService
         {
             services.AddHealthChecks();
             services.AddControllers();
+            // Transients
+            services.AddTransient<IDtoResolver<Restaurant>, RestaurantResolver>();
+            services.AddTransient(typeof(RestaurantEventHandler));
 
-            services.AddSingleton<IDtoResolver<Restaurant>, RestaurantResolver>();
+            // Singletons
             services.AddSingleton<IRepositoryFor<Restaurant>, Repository<Restaurant>>();
+
+            // Dolittle
             services.AddDolittleClient(TenantId.Development, () =>
             {
                 var settings = MicroserviceConfiguration.Dolittle;
