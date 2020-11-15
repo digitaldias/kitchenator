@@ -15,11 +15,11 @@ namespace kitchenator.business.Realestate
     public class RealestateManager : IRealestateManager
     {
         readonly IEventStore _eventStore;
-        readonly IRepositoryFor<Restaurant, IBoundedContext.RealEstate> _restaurants;
+        readonly IRepositoryFor<Restaurant, IBoundedContext.Realestate> _restaurants;
 
         List<Restaurant> _cache;
 
-        public RealestateManager(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.RealEstate> restaurants)
+        public RealestateManager(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.Realestate> restaurants)
         {
             _eventStore  = eventStore;
             _restaurants = restaurants;

@@ -2,7 +2,7 @@
 {
     public interface IBoundedContext
     {
-        public interface RealEstate : IBoundedContext { 
+        public interface Realestate : IBoundedContext { 
         }
         public interface Ordering : IBoundedContext { 
         }
