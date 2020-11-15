@@ -1,18 +1,24 @@
 ﻿using kitchenator.Domain.Concepts.Addresses;
-using kitchenator.Domain.Concepts.Money;
+using System;
 
 namespace kitchenator.Domain.Concepts.Realestate
 {
     public record Restaurant : IReadModel
     {
-        public RestaurantId Id { get; set; }
+        public Guid Id { get; set; }
 
-        public RestaurantName Name { get; set; }
+        public string Name { get; set; }
 
         public City City { get; set; }
 
-        public EmployeeCapacity ChefCapacity { get; set; }
+        public Address Address { get; set; }
 
-        public Rent MonthlyRent { get; set; }
+        public int ChefCapacity { get; set; }
+
+        public decimal MonthlyRent { get; set; }
+
+        public int SeatingCapacity { get; set; }
+
+        public int SquareMeters { get; set; }
     }
 }

@@ -31,7 +31,9 @@ namespace Kitchenator.EmploymentService
         {
             services.AddHealthChecks();
             services.AddControllers();
+            // 'kitchenator.Domain.Contracts.IRepositoryFor`2[Restaurant,kitchenator.Domain.BoundedContexts.IBoundedContext+Employment]' while attempting to activate 'kitchenator.EventManagement.Employment.RestaurantEventHandler'.)'
             services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.Employment>, RestaurantRepo<IBoundedContext.Employment>>();
+            services.AddTransient(typeof(RestaurantEventHandler));
             services.AddDolittleClient(TenantId.Development, () =>
             {
                 var settings = MicroserviceConfiguration.Dolittle;

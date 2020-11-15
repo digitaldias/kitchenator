@@ -6,17 +6,17 @@ namespace kitchenator.Domain.Concepts.Addresses
     {
         public static readonly Country Empty = new Country
         {
-            CountryCode = CountryCode.Empty,
-            CountryName = CountryName.Empty,
+            CountryCode = string.Empty,
+            CountryName = string.Empty,
             Cities      = new List<City>()
         };
 
-        public CountryCode CountryCode { get; set; }
+        public string CountryCode { get; set; }
         
-        public CountryName CountryName { get; set; }
+        public string CountryName { get; set; }
 
         public List<City> Cities { get; set; }
 
-        public string Key => $"{CountryCode.Value}_{CountryName.Value}";
+        public string Key => $"{CountryCode}_{CountryName}";
     }
 }

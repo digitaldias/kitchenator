@@ -22,10 +22,10 @@
             @foreach(var restaurant in _filteredRestaurants)
             {
             <tr @onclick="@(() => SelectedRestaurant.Instance = restaurant)">
-                <td>@restaurant.Name.Value</td>
-                <td>@restaurant.City.CityName.Value</td>
-                <td>@restaurant.ChefCapacity.Value</td>
-                <td>€@restaurant.MonthlyRent.Value.ToString("### ### ###.00")</td>
+                <td>@restaurant.Name</td>
+                <td>@restaurant.City.CityName</td>
+                <td>@restaurant.ChefCapacity</td>
+                <td>€@restaurant.MonthlyRent.ToString("### ### ###.00")</td>
             </tr>
             }
         </tbody>
@@ -63,7 +63,7 @@
     {
         if(country is { })
         {
-            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Value.Equals(country.CountryCode.Value)).ToList();
+            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Equals(country.CountryCode)).ToList();
             CityFilter.Instance  = null;
         }
         else
@@ -95,7 +95,7 @@
 
     private static string GuidToShortSweetness(Restaurant restaurant)
     {
-        var uglyGuid = restaurant.Id.Value.ToString();
+        var uglyGuid = restaurant.Id.ToString();
         return $"{uglyGuid.Substring(0, 5)}...";
     }
 }

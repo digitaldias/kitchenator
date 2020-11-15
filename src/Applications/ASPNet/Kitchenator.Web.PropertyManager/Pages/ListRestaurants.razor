@@ -17,9 +17,9 @@
     <h3>Capacity and Cost</h3>
 
     <div class="alert-info">
-        You are currently spending a total of <b>€@theList.Sum(r => r.MonthlyRent.Value).ToString("### ### ###.0")</b> on
+        You are currently spending a total of <b>€@theList.Sum(r => r.MonthlyRent).ToString("### ### ###.0")</b> on
         monthly rent across @theList.Count().ToString("### ###") restaurants.<br />
-        Total capacity: <b>@theList.Sum(r => r.ChefCapacity.Value).ToString("### ###")</b> employees.
+        Total capacity: <b>@theList.Sum(r => r.ChefCapacity).ToString("### ###")</b> employees.
     </div>
     <hr />
 }
@@ -37,8 +37,6 @@
 
 </EditForm>
 
-
-
 @code
 {
     private EditContext editContext;
@@ -54,7 +52,7 @@
         editContext = new EditContext(dummyObject);
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         // Grab all restaurants, we will never reach an amount that is problematic
         filteredRestaurants = new ViewModel<List<Restaurant>>(new List<Restaurant>());
@@ -63,5 +61,7 @@
         selectedCity        = new ViewModel<City>(new City());
 
         selectedCountry.OnChange += (s, e) => selectedCity.Instance = null;
+
+        return Task.CompletedTask;
     }
 }

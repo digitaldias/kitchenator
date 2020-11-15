@@ -2,10 +2,10 @@
 {
     public record City
     {
-        public CityName CityName { get; set; }
+        public string CityName { get; set; }
 
-        public CountryCode CountryCode { get; set; }
+        public string CountryCode { get; set; }
 
-        public string Key => $"{CountryCode.Value}_{CityName.Value}";
+        public string Key => $"{CountryCode}_{CityName}";
     }
 }

@@ -28,7 +28,7 @@ namespace kitchenator.business.Realestate
 
         public async Task<bool> CreateRestaurant(Restaurant restaurant, CancellationToken token)
         {
-            // Validate Restaurant
+            // TODO: Validate Restaurant
 
             // Save the restaurant in the readmodel
             var readModelUpdated = await _restaurants.Upsert(restaurant);
@@ -38,7 +38,7 @@ namespace kitchenator.business.Realestate
             {
                 _cache.Add(restaurant);
                 var createdEvent = new RestaurantCreated(restaurant);
-                var commitResult = await _eventStore.CommitEvent(createdEvent, createdEvent.Id.Value);
+                var commitResult = await _eventStore.CommitEvent(createdEvent, createdEvent.Id);
                 if (!commitResult?.Any() ?? false)
                 {
                     return false;

@@ -25,8 +25,8 @@ namespace kitchenator.data.azure
 
             return entities.Select(e => new City
             {
-                CountryCode = new CountryCode(e.PartitionKey),
-                CityName = new CityName(e.RowKey)
+                CountryCode = e.PartitionKey,
+                CityName = e.RowKey
             });
         }
     }

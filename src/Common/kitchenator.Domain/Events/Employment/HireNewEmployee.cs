@@ -11,17 +11,17 @@ namespace kitchenator.Domain.Events.Employment
     [EventType("8205dcea-2d64-4a76-9ad8-56bbd48eed3c", generation: 0)]
     public class HireNewEmployee : CommandEvent
     {
-        public EmployeeId EmployeeId { get; set; }
+        public Guid EmployeeId { get; set; }
 
-        public RestaurantId RestaurantId { get; set; }
+        public Guid RestaurantId { get; set; }
 
-        public GivenName GivenName { get; set; }
+        public string GivenName { get; set; }
 
-        public FamilyName FamilyName{ get; set; }
+        public string FamilyName{ get; set; }
 
         public Address HomeAddress { get; set; }
 
-        public Salary Salary { get; set; }
+        public decimal Salary { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
     }

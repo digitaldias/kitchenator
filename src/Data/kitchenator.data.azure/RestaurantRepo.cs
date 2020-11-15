@@ -32,7 +32,7 @@ namespace kitchenator.data.azure
         public override async Task<Restaurant> GetById(Guid id)
         {
             var allRestaurants = await GetAll();
-            return allRestaurants.FirstOrDefault(r => r.Id.Value.Equals(id));
+            return allRestaurants.FirstOrDefault(r => r.Id.Equals(id));
         }
 
         public override async Task<IEnumerable<Restaurant>> GetAll()
@@ -51,10 +51,10 @@ namespace kitchenator.data.azure
                 var restaurant = new Restaurant
                 {
                     Id           = new Guid(entity["id"].StringValue),
-                    Name         = new RestaurantName(entity.RowKey),
+                    Name         = entity.RowKey,
                     City         = new City { CountryCode = entity.PartitionKey, CityName = entity["city"].StringValue },
-                    ChefCapacity = entity["chefcapacity"].Int32Value,
-                    MonthlyRent  = (decimal)entity["rent"].DoubleValue
+                    ChefCapacity = entity["chefcapacity"].Int32Value.Value,
+                    MonthlyRent  = (decimal)entity["rent"].DoubleValue.Value
                 };
                 list.Add(restaurant);
             }
@@ -67,14 +67,14 @@ namespace kitchenator.data.azure
             
             var entity = new DynamicTableEntity
             {
-                PartitionKey = $"{restaurant.City.CountryCode.Value}",
-                RowKey       = restaurant.Name.Value
+                PartitionKey = $"{restaurant.City.CountryCode}",
+                RowKey       = restaurant.Name
             };
 
-            entity.Properties.Add("id",           new EntityProperty(restaurant.Id.Value.ToString()));
-            entity.Properties.Add("city",         new EntityProperty(restaurant.City.CityName.Value));
-            entity.Properties.Add("rent",         new EntityProperty((double)restaurant.MonthlyRent.Value));
-            entity.Properties.Add("chefcapacity", new EntityProperty(restaurant.ChefCapacity.Value));
+            entity.Properties.Add("id",           new EntityProperty(restaurant.Id.ToString()));
+            entity.Properties.Add("city",         new EntityProperty(restaurant.City.CityName));
+            entity.Properties.Add("rent",         new EntityProperty((double)restaurant.MonthlyRent));
+            entity.Properties.Add("chefcapacity", new EntityProperty(restaurant.ChefCapacity));
 
             var upsertOperation = TableOperation.InsertOrReplace(entity);
             var upsertResult    = await Table.ExecuteAsync(upsertOperation);

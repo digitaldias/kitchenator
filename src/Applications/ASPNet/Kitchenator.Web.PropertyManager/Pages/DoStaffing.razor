@@ -45,7 +45,7 @@
         selectedCountry.OnChange += (s, e) => selectedCity.Instance = null;
         selectedRestaurant.OnChange += (s, e) =>
         {
-            NavigationManager.NavigateTo($"/Staffing/ListEmployees/{e.Id.Value}");
+            NavigationManager.NavigateTo($"/Staffing/ListEmployees/{e.Id}");
         };
         return Task.CompletedTask;
     }

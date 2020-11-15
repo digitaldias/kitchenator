@@ -7,6 +7,6 @@ namespace kitchenator.Domain.Contracts.Managers
 {
     public interface IEmployeeManager
     {
-        Task<IEnumerable<Employee>> LoadForRestaurant(RestaurantId restaurantId);
+        Task<IEnumerable<Employee>> LoadForRestaurant(string restaurantId);
     }
 }

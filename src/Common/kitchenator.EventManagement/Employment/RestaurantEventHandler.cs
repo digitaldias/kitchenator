@@ -3,11 +3,12 @@ using Dolittle.SDK.Events.Handling;
 using Dolittle.SDK.Events.Store;
 using kitchenator.Domain;
 using kitchenator.Domain.BoundedContexts;
-using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Concepts.Employees;
 using kitchenator.Domain.Contracts;
-using kitchenator.Domain.Events.Realestate;
 using System;
 using System.Threading.Tasks;
+using Realestate = kitchenator.Domain.Events.Realestate;
+using RealEstate = kitchenator.Domain.Concepts.Realestate;
 
 namespace kitchenator.EventManagement.Employment
 {
@@ -23,12 +24,20 @@ namespace kitchenator.EventManagement.Employment
             _restaurantRepo = restaurantRepo;
         }
 
-        public async Task Handle(RestaurantCreated evt, EventContext eventContext)
-        {
-            var restaurant = evt as Restaurant;
-            if (restaurant is { })
+        public async Task Handle(Realestate.RestaurantCreated evt, EventContext eventContext)
+        {            
+            if (evt is RealEstate.Restaurant restaurant)
             {
-                await _restaurantRepo.Upsert(restaurant);
+                var newRestaurant = new Restaurant
+                {
+                    Id                = restaurant.Id,
+                    Name              = restaurant.Name,
+                    Address           = restaurant.Address,
+                    EmployeeCapacity  = restaurant.ChefCapacity,
+                    CloseDate         = DateTime.MaxValue,
+                    CurrentlyEmployed = 0
+                };
+                await _restaurantRepo.Upsert(newRestaurant);
             }
         }
     }

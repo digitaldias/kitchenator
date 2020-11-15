@@ -12,7 +12,7 @@ namespace kitchenator.business
         {
         }
 
-        public async Task<IEnumerable<Employee>> LoadForRestaurant(RestaurantId restaurantId)
+        public async Task<IEnumerable<Employee>> LoadForRestaurant(string restaurantId)
         {
             return await Task.FromResult(new List<Employee>());
         }

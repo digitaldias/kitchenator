@@ -27,7 +27,7 @@
                     {
                         @foreach(var country in CountriesLoader?.Countries)
                         {
-                            <option value="@country.CountryCode.Value">@country.CountryName.Value</option>
+                            <option value="@country.CountryCode">@country.CountryName</option>
                         }
                     }
                 </InputSelect></td>
@@ -40,7 +40,7 @@
                 {
                     foreach(var city in _selectedCountry.Cities)
                     {
-                        <option value="@city.CityName.Value">@city.CityName.Value</option>
+                        <option value="@city.CityName">@city.CityName</option>
                     }
                 }
                 </InputSelect>
@@ -77,7 +77,7 @@
             _selectedCountryCode = value;
             if(!string.IsNullOrEmpty(_selectedCountryCode))
             {
-                _selectedCountry = CountriesLoader.Countries.First(c => c.CountryCode.Value.Equals(_selectedCountryCode, StringComparison.InvariantCultureIgnoreCase));
+                _selectedCountry = CountriesLoader.Countries.First(c => c.CountryCode.Equals(_selectedCountryCode, StringComparison.InvariantCultureIgnoreCase));
             }
             else
             {
@@ -95,7 +95,7 @@
             _selectedCityName = value;
             if(!string.IsNullOrEmpty(_selectedCityName))
             {
-                addRestaurantRequest.City = _selectedCountry.Cities.First(c => c.CityName.Value.Equals(_selectedCityName, StringComparison.InvariantCultureIgnoreCase));
+                addRestaurantRequest.City = _selectedCountry.Cities.First(c => c.CityName.Equals(_selectedCityName, StringComparison.InvariantCultureIgnoreCase));
             }
             else
             {

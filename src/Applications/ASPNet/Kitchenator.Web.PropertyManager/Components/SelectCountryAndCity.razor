@@ -12,7 +12,7 @@
                 {
                     @foreach (var country in allCountries)
                     {
-                        <option value="@country.Key">@country.CountryName.Value</option>
+                        <option value="@country.Key">@country.CountryName</option>
                     }
                 }
             </InputSelect>
@@ -26,7 +26,7 @@
                 {
                     @foreach (var city in SelectedCountry.Instance.Cities)
                     {
-                        <option value="@city.Key">@city.CityName.Value</option>
+                        <option value="@city.Key">@city.CityName</option>
                     }
                 }
             </InputSelect>

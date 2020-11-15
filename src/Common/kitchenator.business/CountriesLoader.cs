@@ -37,7 +37,7 @@ namespace kitchenator.business
             foreach(var country in _countries)
             {
                 var citiesFound = cities.Where(c =>
-                    c.CountryCode.Value.Equals(country.CountryCode.Value, System.StringComparison.InvariantCultureIgnoreCase));
+                    c.CountryCode.Equals(country.CountryCode, System.StringComparison.InvariantCultureIgnoreCase));
                 country.Cities = new List<City>(citiesFound);
             }
             _initialized = true;

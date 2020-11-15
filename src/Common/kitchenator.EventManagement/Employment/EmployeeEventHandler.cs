@@ -4,7 +4,6 @@ using Dolittle.SDK.Events.Store;
 using kitchenator.Domain;
 using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Employees;
-using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Events;
 using kitchenator.Domain.Events.Employment;
