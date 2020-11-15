@@ -1,8 +1,6 @@
 ﻿using Dolittle.SDK.Concepts;
 using kitchenator.Domain.Concepts.Addresses;
-using kitchenator.Domain.Concepts.Dates;
-using kitchenator.Domain.Concepts.Money;
-using kitchenator.Domain.Concepts.People;
+using System;
 
 namespace kitchenator.Domain.Concepts.Employees
 {
@@ -10,23 +8,23 @@ namespace kitchenator.Domain.Concepts.Employees
     {
         public static readonly Employee Empty = new Employee
         {
-            EmployeeId      = EmployeeId.Empty,
-            GivenName       = GivenName.Empty,
-            FamilyName      = FamilyName.Empty,
+            EmployeeId      = Guid.Empty,
+            GivenName       = string.Empty,
+            FamilyName      = string.Empty,
             Address         = Address.Empty,
-            Email           = Email.Empty,
-            Salary          = Salary.Empty,
-            TerminationDate = TerminationDate.Empty,
-            HireDate        = HireDate.Empty
+            Email           = string.Empty,
+            Salary          = 0m,
+            TerminationDate = DateTime.MinValue,
+            HireDate        = DateTime.MinValue
         };
 
-        public EmployeeId EmployeeId { get; set; }
-        public GivenName GivenName { get; set; }
-        public FamilyName FamilyName { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string GivenName { get; set; }
+        public string FamilyName { get; set; }
         public Address Address { get; set; }
-        public Email Email { get; set; }
-        public Salary Salary { get; set; }
-        public TerminationDate TerminationDate { get; set; }
-        public HireDate HireDate { get; set; }
+        public string Email { get; set; }
+        public decimal Salary { get; set; }
+        public DateTime TerminationDate { get; set; }
+        public DateTime HireDate { get; set; }
     }
 }

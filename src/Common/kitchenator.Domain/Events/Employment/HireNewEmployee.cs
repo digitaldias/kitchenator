@@ -1,9 +1,5 @@
 ﻿using Dolittle.SDK.Events;
 using kitchenator.Domain.Concepts.Addresses;
-using kitchenator.Domain.Concepts.Employees;
-using kitchenator.Domain.Concepts.Money;
-using kitchenator.Domain.Concepts.People;
-using kitchenator.Domain.Concepts.Realestate;
 using System;
 
 namespace kitchenator.Domain.Events.Employment

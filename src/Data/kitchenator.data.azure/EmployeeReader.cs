@@ -1,5 +1,4 @@
 ﻿using kitchenator.Domain.Concepts.Employees;
-using kitchenator.Domain.Concepts.People;
 using kitchenator.Domain.Contracts.Readers;
 using System;
 using System.Collections.Generic;
@@ -26,9 +25,9 @@ namespace kitchenator.data.azure
             {
                 chefs.AddRange(entities.Select(e => new Employee
                 {
-                    EmployeeId      = new EmployeeId(Guid.Parse(e.RowKey)),
-                    FamilyName      = new FamilyName(e.PartitionKey),
-                    GivenName       = new GivenName(e["name"].StringValue),
+                    EmployeeId      = Guid.Parse(e.RowKey),
+                    FamilyName      = e.PartitionKey,
+                    GivenName       = e["name"].StringValue,
                     HireDate        = e["hired"].DateTime ?? DateTime.MinValue,
                     TerminationDate = e["fired"].DateTime ?? DateTime.MaxValue
                 }));
