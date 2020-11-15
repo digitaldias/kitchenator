@@ -4,8 +4,7 @@
 @using kitchenator.Domain.Contracts;
 @using kitchenator.Domain.BoundedContexts;
 
-@inject BackendConnector connector
-@inject IModelReaderFor<Restaurant, IBoundedContext.Employment> _reader;
+@inject IModelReaderFor<Restaurant, IBoundedContext.Realestate> _reader;
 
 @if(_filteredRestaurants is { })
 {
@@ -25,7 +24,7 @@
             {
             <tr @onclick="@(() => SelectedRestaurant.Instance = restaurant)">
                 <td>@restaurant.Name.Value</td>
-                <td>@restaurant.City.CityName</td>
+                <td>@restaurant.City.CityName.Value</td>
                 <td>@restaurant.ChefCapacity.Value</td>
                 <td>€@restaurant.MonthlyRent.Value.ToString("### ### ###.00")</td>
             </tr>
@@ -33,7 +32,6 @@
         </tbody>
     </table>
 }
-
 
 @code {
     [Parameter]
@@ -45,12 +43,15 @@
     [Parameter]
     public ViewModel<City> CityFilter { get; set; }
 
+    [Parameter]
+    public ViewModel<List<Restaurant>> FilteredRestaurants { get;  set; }
+
     private List<Restaurant> _restaurants;
     private List<Restaurant> _filteredRestaurants;
 
     protected override async Task OnInitializedAsync()
     {
-        _restaurants = (await _reader.GetAll()).ToList();
+        _restaurants         = (await _reader.GetAll()).ToList();
         _filteredRestaurants = new List<Restaurant>(_restaurants);
 
         CityFilter.OnChange     += UpdateFilteredRestaurants;
@@ -68,6 +69,7 @@
         {
             _filteredRestaurants = _restaurants.ToList();
         }
+        FilteredRestaurants = new ViewModel<List<Restaurant>>(_filteredRestaurants);
         StateHasChanged();
     }
 
@@ -80,16 +82,15 @@
             {
                 _filteredRestaurants = _filteredRestaurants.Where(r => r.City.Key.Equals(city.Key)).ToList();
             }
-
-            StateHasChanged();
         }
         else
         {
             _filteredRestaurants = _restaurants;
         }
+        StateHasChanged();
+        FilteredRestaurants = new ViewModel<List<Restaurant>>(_filteredRestaurants);
 
     }
-
 
     private static string GuidToShortSweetness(Restaurant restaurant)
     {
