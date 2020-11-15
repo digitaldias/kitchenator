@@ -35,27 +35,5 @@ namespace Kitchenator.Web.PropertyManager.Data
             }
             return false;
         }
-
-        public async Task<IEnumerable<Restaurant>> GetRestaurants()
-        {
-            var response = await _httpClient.GetAsync("/restaurants");
-            if(response.IsSuccessStatusCode)
-            {
-                var stream = await response.Content.ReadAsStreamAsync();
-                return await JsonSerializer.DeserializeAsync<Restaurant[]>(stream, _jsonSerializerOptions);
-            }
-            return new List<Restaurant>();
-        }
-
-        public async Task<Restaurant> GetRestaurantById(string restaurantId)
-        {
-            if (string.IsNullOrEmpty(restaurantId))
-            {
-                return null;
-            }
-            var response = await _httpClient.GetAsync($"/restaurants/{restaurantId}");
-            var stream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<Restaurant>(stream, _jsonSerializerOptions);
-        }
     }
 }
