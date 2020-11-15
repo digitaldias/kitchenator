@@ -1,5 +1,7 @@
 using kitchenator.business;
 using kitchenator.data.azure;
+using kitchenator.data.azure.Dto;
+using kitchenator.data.azure.Dto.Realestate;
 using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
@@ -30,8 +32,9 @@ namespace Kitchenator.Web.PropertyManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            //TODO: This is ugly, how do we get around it?
-            services.AddSingleton<IModelReaderFor<Restaurant, IBoundedContext.Realestate>, RestaurantRepo<IBoundedContext.Realestate>>();            
+            
+            services.AddSingleton<IDtoResolver<Restaurant>, RestaurantResolver>();
+            services.AddSingleton<IModelReaderFor<Restaurant>, ReadOnlyRepository<Restaurant>>();
 
             services.AddSingleton<IEmployeeManager,   EmployeeManager>();
             services.AddSingleton<ICityReader,        CityReader>();

@@ -2,9 +2,11 @@ using Dolittle.AspNET.ConfigurationExtensions;
 using Dolittle.SDK;
 using Dolittle.SDK.Tenancy;
 using kitchenator.data.azure;
+using kitchenator.data.azure.Dto;
+using kitchenator.data.azure.Dto.Employees;
 using kitchenator.Domain;
 using kitchenator.Domain.BoundedContexts;
-using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Concepts.Employees;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Events.Employment;
 using kitchenator.Domain.Events.Realestate;
@@ -31,9 +33,9 @@ namespace Kitchenator.EmploymentService
         {
             services.AddHealthChecks();
             services.AddControllers();
-            // 'kitchenator.Domain.Contracts.IRepositoryFor`2[Restaurant,kitchenator.Domain.BoundedContexts.IBoundedContext+Employment]' while attempting to activate 'kitchenator.EventManagement.Employment.RestaurantEventHandler'.)'
-            services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.Employment>, RestaurantRepo<IBoundedContext.Employment>>();
-            services.AddTransient(typeof(RestaurantEventHandler));
+
+            services.AddSingleton<IDtoResolver<Restaurant>, RestaurantResolver>();
+            services.AddSingleton<IRepositoryFor<Restaurant>, Repository<Restaurant>>();
             services.AddDolittleClient(TenantId.Development, () =>
             {
                 var settings = MicroserviceConfiguration.Dolittle;

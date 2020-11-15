@@ -16,8 +16,7 @@ namespace Kitchenator.Recruiter.DependencyInversion
                 x.WithDefaultConventions();
             });
 
-            // Singletons in the Project            
-            For<IEmployeeReader>().Use<EmployeeReader>().Singleton();
+            // Singletons in the Project                        
             For<ICountriesReader>().Use<CountriesReader>().Singleton();
             For<ICountriesLoader>().Use<CountriesLoader>().Singleton();
         }

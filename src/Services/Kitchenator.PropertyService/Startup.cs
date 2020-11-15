@@ -3,6 +3,8 @@ using Dolittle.SDK;
 using Dolittle.SDK.Tenancy;
 using kitchenator.business.Realestate;
 using kitchenator.data.azure;
+using kitchenator.data.azure.Dto;
+using kitchenator.data.azure.Dto.Realestate;
 using kitchenator.Domain;
 using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
@@ -51,7 +53,8 @@ namespace Kitchenator.PropertyService
             services.AddHealthChecks();
             services.AddControllers();
             services.AddSingleton<IRealestateManager, RealestateManager>();
-            services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.Realestate>, RestaurantRepo<IBoundedContext.Realestate>>();
+            services.AddSingleton<IDtoResolver<Restaurant>, RestaurantResolver>();
+            services.AddSingleton<IRepositoryFor<Restaurant>, Repository<Restaurant>>();
 
             services.AddDolittleClient(TenantId.Development, () =>
             {
@@ -59,7 +62,7 @@ namespace Kitchenator.PropertyService
                 return Client.ForMicroservice(settings.ServiceId)
                  .WithEventTypes(config =>
                  {
-                     config.Register<RestaurantCreated>();                     
+                     config.Register<RestaurantCreated>();
                  })
                 .WithEventHandlers(config =>
                 {                    

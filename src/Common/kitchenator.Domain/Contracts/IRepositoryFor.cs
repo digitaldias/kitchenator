@@ -1,27 +1,21 @@
-﻿using kitchenator.Domain.BoundedContexts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace kitchenator.Domain.Contracts
 {
-    public interface IModelReaderFor<TReadModel, TBoundedContext> : IMustBeInitialized
+    public interface IModelReaderFor<TReadModel> : IMustBeInitialized
         where TReadModel : IReadModel
-        where TBoundedContext : IBoundedContext
-
     {
         Task<IEnumerable<TReadModel>> GetAll();
 
         Task<TReadModel> GetById(Guid id);
     }
 
-    public interface IRepositoryFor<TReadModel, TBoundedContext> : IModelReaderFor<TReadModel, TBoundedContext>
+    public interface IRepositoryFor<TReadModel> : IModelReaderFor<TReadModel>
         where TReadModel      : IReadModel
-        where TBoundedContext : IBoundedContext
-
     {
         Task<bool> DeleteById(Guid Id);
-
 
         Task<bool> Upsert(TReadModel readModel);
     }

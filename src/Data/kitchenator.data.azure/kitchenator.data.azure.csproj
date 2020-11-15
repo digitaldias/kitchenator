@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
+    <PackageReference Include="Azure.Data.Tables" Version="3.0.0-beta.3" />    
     <PackageReference Include="ObjectFlattenerRecomposer.Core" Version="1.0.0" />
   </ItemGroup>
 

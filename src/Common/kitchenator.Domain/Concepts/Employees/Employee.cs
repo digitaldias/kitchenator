@@ -8,7 +8,7 @@ namespace kitchenator.Domain.Concepts.Employees
     {
         public static readonly Employee Empty = new Employee
         {
-            EmployeeId      = Guid.Empty,
+            Id              = Guid.Empty,
             GivenName       = string.Empty,
             FamilyName      = string.Empty,
             Address         = Address.Empty,
@@ -18,7 +18,8 @@ namespace kitchenator.Domain.Concepts.Employees
             HireDate        = DateTime.MinValue
         };
 
-        public Guid EmployeeId { get; set; }
+        public Guid Id { get; set; }
+
         public string GivenName { get; set; }
         public string FamilyName { get; set; }
         public Address Address { get; set; }

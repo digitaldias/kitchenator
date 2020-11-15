@@ -1,6 +1,7 @@
-﻿using kitchenator.Domain;
+﻿using Azure;
+using Azure.Data.Tables;
+using kitchenator.Domain;
 using kitchenator.Domain.Contracts;
-using Microsoft.Azure.Cosmos.Table;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,38 +11,40 @@ namespace kitchenator.data.azure
 {
     public class AzureConnectedTable : IMustBeInitialized
     {
+        string _tableName;
+        TableClient _client;
+
         public AzureConnectedTable(string tableName)
         {
+            _tableName              = tableName;
             var settings            = MicroserviceConfiguration.AzureTables;
-            var cloudStorageAccount = CloudStorageAccount.Parse(settings.ConnectionString);
-            var tableClient         = cloudStorageAccount.CreateCloudTableClient();
-
-            Table         = tableClient.GetTableReference(tableName);
+            _client                 = new TableClient(settings.ConnectionString, tableName);
         }
 
         public bool Initialized { get; private set; }
 
-        public CloudTable Table { get; }
+        protected TableClient TableClient  => _client;
 
-        public async Task<IEnumerable<DynamicTableEntity>> GetAllRecords()
+        public async Task<IEnumerable<TableEntity>> GetAllRecords()
         {
             await Initialize();
-            TableContinuationToken token = null;
-            var entities = new List<DynamicTableEntity>();
-            try
-            {
-                do
-                {
-                    var executeResult = await Table.ExecuteQuerySegmentedAsync(new TableQuery<DynamicTableEntity>(), token);
-                    token = executeResult.ContinuationToken;
+            var entities = new List<TableEntity>();
 
-                    entities.AddRange(executeResult.Results);
-                } while (token is { });
-            }
-            catch (Exception ex)
+            Pageable<TableEntity> query = _client.Query<TableEntity>();
+            string token = null;
+            do
             {
-                Trace.Write(ex.Message);
-            }
+                var pages = query.AsPages(token, 100);
+                foreach (var page in pages)
+                {
+                    foreach (var value in page.Values)
+                    {
+                        entities.Add(value);
+                    }
+                    token = page.ContinuationToken;
+                }
+            } while (!string.IsNullOrEmpty(token));
+
             return entities;
         }
 
@@ -52,7 +55,7 @@ namespace kitchenator.data.azure
 
             try
             {
-                Initialized = await Table.CreateIfNotExistsAsync();
+                var response = await _client.CreateIfNotExistsAsync();                
             }
             catch (Exception ex)
             {

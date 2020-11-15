@@ -1,9 +1,8 @@
 ﻿@using kitchenator.Domain.Concepts.Realestate;
 @using kitchenator.Domain.Concepts.Addresses; 
 @using kitchenator.Domain.Contracts;
-@using kitchenator.Domain.BoundedContexts;
 
-@inject IModelReaderFor<Restaurant, IBoundedContext.Realestate> reader;
+@inject IModelReaderFor<Restaurant> reader;
 
 @if(_filteredRestaurants is { })
 {

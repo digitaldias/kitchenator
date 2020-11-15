@@ -2,7 +2,6 @@
 using Dolittle.SDK.Events.Handling;
 using Dolittle.SDK.Events.Store;
 using kitchenator.Domain;
-using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Employees;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Events;
@@ -16,12 +15,12 @@ namespace kitchenator.EventManagement.Employment
     public class EmployeeEventHandler : ICanHandleEvents
     {
         readonly IEventStore _eventStore;
-        readonly IRepositoryFor<Employee, IBoundedContext.Employment>   _employees;
-        readonly IRepositoryFor<Restaurant, IBoundedContext.Employment> _restaurants;
+        readonly IRepositoryFor<Employee>   _employees;
+        readonly IRepositoryFor<Restaurant> _restaurants;
 
         public EmployeeEventHandler(IEventStore eventStore,
-            IRepositoryFor<Employee,   IBoundedContext.Employment> employees,
-            IRepositoryFor<Restaurant, IBoundedContext.Employment> restaurants)
+            IRepositoryFor<Employee> employees,
+            IRepositoryFor<Restaurant> restaurants)
         {
             _eventStore  = eventStore;
             _employees   = employees;

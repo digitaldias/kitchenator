@@ -72,7 +72,7 @@ namespace Kitchenator.Recruiter.ViewModels
             if (this.SelectedChef is null)
                 return;
 
-            SelectedChef.EmployeeId = Guid.NewGuid();
+            SelectedChef.Id = Guid.NewGuid();
             //var chefCreated = new ChefCreated(SelectedChef);
             //await _dolittleClient.EventStore
             //    .ForTenant(TenantId.Development)

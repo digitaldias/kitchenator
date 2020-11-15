@@ -1,5 +1,4 @@
 ﻿using Dolittle.SDK.Events.Store;
-using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
@@ -15,11 +14,11 @@ namespace kitchenator.business.Realestate
     public class RealestateManager : IRealestateManager
     {
         readonly IEventStore _eventStore;
-        readonly IRepositoryFor<Restaurant, IBoundedContext.Realestate> _restaurants;
+        readonly IRepositoryFor<Restaurant> _restaurants;
 
         List<Restaurant> _cache;
 
-        public RealestateManager(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.Realestate> restaurants)
+        public RealestateManager(IEventStore eventStore, IRepositoryFor<Restaurant> restaurants)
         {
             _eventStore  = eventStore;
             _restaurants = restaurants;

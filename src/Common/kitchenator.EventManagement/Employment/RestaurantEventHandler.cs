@@ -16,9 +16,9 @@ namespace kitchenator.EventManagement.Employment
     public class RestaurantEventHandler : ICanHandleEvents
     {
         readonly IEventStore _eventStore;
-        readonly IRepositoryFor<Restaurant, IBoundedContext.Employment> _restaurantRepo;
+        readonly IRepositoryFor<Restaurant> _restaurantRepo;
 
-        public RestaurantEventHandler(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.Employment> restaurantRepo)
+        public RestaurantEventHandler(IEventStore eventStore, IRepositoryFor<Restaurant> restaurantRepo)
         {
             _eventStore     = eventStore;
             _restaurantRepo = restaurantRepo;
