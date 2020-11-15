@@ -8,7 +8,6 @@ using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Events;
 using kitchenator.Domain.Events.Employment;
-using kitchenator.Domain.Events.Realestate;
 using System;
 using System.Threading.Tasks;
 
@@ -28,12 +27,6 @@ namespace kitchenator.EventManagement.Employment
             _eventStore  = eventStore;
             _employees   = employees;
             _restaurants = restaurants;
-        }
-
-
-        public async Task Handle(RestaurantCreated evt, EventContext eventContext)
-        {
-            await _restaurants.Upsert(evt as Restaurant);
         }
 
         public async Task Handle(HireNewEmployee evt, EventContext eventContext)

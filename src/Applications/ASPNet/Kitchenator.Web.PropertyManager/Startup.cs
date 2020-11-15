@@ -1,9 +1,7 @@
 using kitchenator.business;
 using kitchenator.data.azure;
-using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
 using kitchenator.Domain.Contracts.Readers;
-using kitchenator.EventManagement.Realestate;
 using Kitchenator.Web.PropertyManager.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,11 +25,12 @@ namespace Kitchenator.Web.PropertyManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();            
-            services.AddSingleton<IEmployeeManager, EmployeeManager>();
-            services.AddSingleton<ICityReader,      CityReader>();
-            services.AddSingleton<ICountriesReader, CountriesReader>();
-            services.AddSingleton<ICountriesLoader, CountriesLoader>();
+            services.AddServerSideBlazor();
+            
+            services.AddSingleton<IEmployeeManager,   EmployeeManager>();
+            services.AddSingleton<ICityReader,        CityReader>();
+            services.AddSingleton<ICountriesReader,   CountriesReader>();
+            services.AddSingleton<ICountriesLoader,   CountriesLoader>();
             services.AddHttpClient<BackendConnector>(client =>
             {
                 client.BaseAddress = Configuration.GetServiceUri("kitchenator-propertyservice");

@@ -1,3 +1,14 @@
+using Dolittle.AspNET.ConfigurationExtensions;
+using Dolittle.SDK;
+using Dolittle.SDK.Tenancy;
+using kitchenator.data.azure;
+using kitchenator.Domain;
+using kitchenator.Domain.BoundedContexts;
+using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Contracts;
+using kitchenator.Domain.Events.Employment;
+using kitchenator.Domain.Events.Realestate;
+using kitchenator.EventManagement.Employment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +31,22 @@ namespace Kitchenator.EmploymentService
         {
             services.AddHealthChecks();
             services.AddControllers();
+            services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.Employment>, RestaurantRepo<IBoundedContext.Employment>>();
+            services.AddDolittleClient(TenantId.Development, () =>
+            {
+                var settings = MicroserviceConfiguration.Dolittle;
+                return Client.ForMicroservice(settings.ServiceId)
+                 .WithEventTypes(config =>
+                 {
+                     config.Register<HireNewEmployee>();
+                     config.Register<RestaurantCreated>();
+                 })
+                .WithEventHandlers(config =>
+                {
+                    config.RegisterEventHandler<EmployeeEventHandler>();
+                    config.RegisterEventHandler<RestaurantEventHandler>();
+                }).Build();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,12 +57,10 @@ namespace Kitchenator.EmploymentService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDolittle();
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");

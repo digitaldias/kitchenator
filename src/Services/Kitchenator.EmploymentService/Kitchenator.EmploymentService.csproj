@@ -7,6 +7,10 @@
 
   <ItemGroup>
     <PackageReference Include="Dolittle.SDK" Version="$(DolittleSDKVersion)" />
+    <ProjectReference Include="..\..\Common\kitchenator.business\kitchenator.business.csproj" />
     <ProjectReference Include="..\..\Common\kitchenator.Domain\kitchenator.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\kitchenator.EventManagement\kitchenator.EventManagement.csproj" />
+    <ProjectReference Include="..\..\Data\kitchenator.data.azure\kitchenator.data.azure.csproj" />
+    <ProjectReference Include="..\..\Dolittle.AspNET.ConfigurationExtensions\Dolittle.AspNET.ConfigurationExtensions.csproj" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,9 @@ namespace kitchenator.Domain.Events.Realestate
     {
         public RestaurantCreated(Restaurant other)
         {
+            if (other is null)
+                return;
+
             Id           = other.Id;
             Name         = other.Name;
             City         = other.City;

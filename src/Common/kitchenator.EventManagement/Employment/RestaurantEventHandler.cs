@@ -15,11 +15,11 @@ namespace kitchenator.EventManagement.Employment
     public class RestaurantEventHandler : ICanHandleEvents
     {
         readonly IEventStore _eventStore;
-        readonly IRepositoryFor<Restaurant, IBoundedContext.RealEstate> _restaurantRepo;
+        readonly IRepositoryFor<Restaurant, IBoundedContext.Employment> _restaurantRepo;
 
-        public RestaurantEventHandler(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.RealEstate> restaurantRepo)
+        public RestaurantEventHandler(IEventStore eventStore, IRepositoryFor<Restaurant, IBoundedContext.Employment> restaurantRepo)
         {
-            _eventStore = eventStore;
+            _eventStore     = eventStore;
             _restaurantRepo = restaurantRepo;
         }
 

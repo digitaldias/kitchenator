@@ -8,4 +8,8 @@
     <ProjectReference Include="..\kitchenator.Domain\kitchenator.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Realestate\" />
+  </ItemGroup>
+
 </Project>

@@ -11,8 +11,4 @@
     <ProjectReference Include="..\..\Common\kitchenator.EventManagement\kitchenator.EventManagement.csproj" />
     <ProjectReference Include="..\..\Dolittle.AspNET.ConfigurationExtensions\Dolittle.AspNET.ConfigurationExtensions.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EventHandlers\" />
-  </ItemGroup>
 </Project>

@@ -118,9 +118,8 @@
     {
         if (!editContext.Validate())
             return;
-
-        var success = await backendConnector.AddRestaurant(addRestaurantRequest);
-        if(success)
+        
+        if(await backendConnector.AddRestaurant(addRestaurantRequest))
             NavigationManager.NavigateTo("/listRestaurants");
 
         statusText = "Hey! That didn't work very well!!";

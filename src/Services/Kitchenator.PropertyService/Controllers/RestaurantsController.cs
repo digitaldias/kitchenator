@@ -1,13 +1,10 @@
-﻿using Dolittle.SDK.Events.Store;
-using kitchenator.Domain.BoundedContexts;
-using kitchenator.Domain.Concepts.Realestate;
-using kitchenator.Domain.Contracts;
+﻿using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Contracts.Managers;
 using kitchenator.Domain.Entities.Realestate;
-using kitchenator.Domain.Events.Realestate;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Kitchenator.PropertyService.Controllers
@@ -16,35 +13,33 @@ namespace Kitchenator.PropertyService.Controllers
     [ApiController]
     public class RestaurantsController : Controller
     {
-        readonly IEventStore _eventStore;        
-        readonly IRepositoryFor<Restaurant, IBoundedContext.RealEstate> _restaurantRepo;
-        List<Restaurant> _restaurants;
+        readonly IRealestateManager _realestateManager;
 
-        public RestaurantsController(
-            IEventStore eventStore,
-            IRepositoryFor<Restaurant, IBoundedContext.RealEstate> restaurantRepo)
+        public RestaurantsController(IRealestateManager realestateManager)
         {
-            _restaurants    = new List<Restaurant>();
-            _eventStore     = eventStore;
-            _restaurantRepo = restaurantRepo;
+            _realestateManager = realestateManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            _restaurants = new List<Restaurant>(await _restaurantRepo.GetAll());
-
-            return Ok(_restaurants);
+            var results = await _realestateManager.GetAll();
+            if(!results?.Any() ?? true)
+            {
+                return NotFound("No restaurants loaded");
+            }
+            return Ok(results);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            if(!Guid.TryParse(id, out Guid restaurantId))
+            var match = await _realestateManager.GetById(id);
+            if(match is { })
             {
-                return BadRequest();
+                return Ok(match);
             }
-            return Ok(await _restaurantRepo.GetById(restaurantId));
+            return NotFound(id);
         }
 
         public IActionResult Index()
@@ -53,33 +48,23 @@ namespace Kitchenator.PropertyService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] AddRestaurantRequest request)
+        public async Task<IActionResult> Post([FromBody] AddRestaurantRequest request, CancellationToken token)
         {
-            // Pretend we just did a whole lotta validation right here
-            var createRequest = new RestaurantCreationRequested
+            var restaurant = new Restaurant
             {
-                RestaurantId = new RestaurantId(Guid.NewGuid()),
-                Name         = request.Name,
-                City         = request.City,
-                ChefCapacity = request.ChefCapacity,
-                MonthlyRent  = request.MonthlyRent
-            };
-            var commitResult = await _eventStore.CommitEvent(createRequest, createRequest.RestaurantId.Value);
-            if (!commitResult?.Any() ?? false)
-                return BadRequest($"Failed to commit the request '{nameof(AddRestaurantRequest)}'");
-
-            //TODO: Remove this once our EventHandler actually knows how to listen to events            
-            if(await _restaurantRepo.Upsert(new Restaurant {
                 Id           = Guid.NewGuid(),
                 Name         = request.Name,
                 ChefCapacity = request.ChefCapacity,
                 MonthlyRent  = request.MonthlyRent,
                 City         = request.City
-            }))
+            };
+
+            var created = await _realestateManager.CreateRestaurant(restaurant, token);
+            if(!created)
             {
-                return Ok("We're good!");
+                return UnprocessableEntity($"Failed to update the readmodel '{nameof(Restaurant)}'");
             }
-            return UnprocessableEntity($"Failed to upsert readmodel '{nameof(Restaurant)}'");
+            return Ok();
         }
     }
 }

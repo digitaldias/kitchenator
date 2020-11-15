@@ -1,13 +1,14 @@
 using Dolittle.AspNET.ConfigurationExtensions;
 using Dolittle.SDK;
 using Dolittle.SDK.Tenancy;
+using kitchenator.business.Realestate;
 using kitchenator.data.azure;
 using kitchenator.Domain;
 using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
+using kitchenator.Domain.Contracts.Managers;
 using kitchenator.Domain.Events.Realestate;
-using kitchenator.EventManagement.Realestate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -35,11 +36,8 @@ namespace Kitchenator.PropertyService
 
             app.UseDolittle();
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
@@ -52,8 +50,7 @@ namespace Kitchenator.PropertyService
         {
             services.AddHealthChecks();
             services.AddControllers();
-            
-            services.AddTransient<RealestateEventHandler>();            
+            services.AddSingleton<IRealestateManager, RealestateManager>();
             services.AddSingleton<IRepositoryFor<Restaurant, IBoundedContext.RealEstate>, RestaurantRepo<IBoundedContext.RealEstate>>();
 
             services.AddDolittleClient(TenantId.Development, () =>
@@ -62,12 +59,10 @@ namespace Kitchenator.PropertyService
                 return Client.ForMicroservice(settings.ServiceId)
                  .WithEventTypes(config =>
                  {
-                     config.Register<RestaurantCreated>();
-                     config.Register<RestaurantCreationRequested>();
+                     config.Register<RestaurantCreated>();                     
                  })
                 .WithEventHandlers(config =>
-                {
-                    config.RegisterEventHandler<RealestateEventHandler>();
+                {                    
                 }).Build();
             });
         }
