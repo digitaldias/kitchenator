@@ -8,7 +8,7 @@ namespace kitchenator.Domain.Concepts.Employees
         public Restaurant()
         {
             Id                = Guid.NewGuid();
-            CloseDate         = DateTime.MaxValue;
+            CloseDate         = DateTime.Now.AddYears(50);
             CurrentlyEmployed = 0;
         }
 
@@ -18,6 +18,9 @@ namespace kitchenator.Domain.Concepts.Employees
             Name              = restaurant.Name;
             Address           = restaurant.Address;
             EmployeeCapacity  = restaurant.ChefCapacity;
+            CloseDate         = DateTime.Now.AddYears(50);
+            CurrentlyEmployed = 0;
+
         }
 
         public Guid Id{ get; set; }
