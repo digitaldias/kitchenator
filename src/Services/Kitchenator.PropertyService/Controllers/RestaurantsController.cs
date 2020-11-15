@@ -1,4 +1,5 @@
-﻿using kitchenator.Domain.Concepts.Realestate;
+﻿using kitchenator.Domain.Concepts.Addresses;
+using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts.Managers;
 using kitchenator.Domain.Entities.Realestate;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,15 @@ namespace Kitchenator.PropertyService.Controllers
                 Name         = request.Name,
                 ChefCapacity = request.ChefCapacity,
                 MonthlyRent  = request.MonthlyRent,
-                City         = request.City
+                Address      = new Address
+                {
+                    StreetName   = request.StreetName,
+                    StreetNumber = request.StreetNumber,
+                    PostalCode   = request.ZipCode,
+                    City         = request.City
+                },
+                SeatingCapacity = request.SeatingCapacity,
+                SquareMeters = request.SquareMeters
             };
 
             var created = await _realestateManager.CreateRestaurant(restaurant, token);

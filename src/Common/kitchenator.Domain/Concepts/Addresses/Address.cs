@@ -7,7 +7,7 @@
             StreetName   = string.Empty,
             StreetNumber = string.Empty,
             PostalCode   = string.Empty,
-            Country      = Country.Empty
+            City         = City.Empty
         };
 
         public string StreetName { get; set; }
@@ -16,6 +16,6 @@
 
         public string PostalCode { get; set; }
 
-        public Country Country { get; set; }
+        public City City { get; set; }
     }
 }

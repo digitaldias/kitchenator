@@ -22,10 +22,10 @@ namespace kitchenator.data.azure.Dto.Employees
                     StreetName   = entity.GetString("streetname"),
                     StreetNumber = entity.GetString("streetnumber"),
                     PostalCode   = entity.GetString("postalcode"),
-                    Country      = new Country
+                    City        = new City
                     {
                         CountryCode = entity.GetString("countrycode"),
-                        CountryName = entity.GetString("countryname")
+                        CityName    = entity.GetString("city")
                     }
                 }
             };
@@ -33,7 +33,7 @@ namespace kitchenator.data.azure.Dto.Employees
 
         public TableEntity ToTableEntity(Restaurant restaurant)
         {
-            return new TableEntity(restaurant.Address.Country.CountryCode, restaurant.Name)
+            return new TableEntity(restaurant.Address.City.CountryCode, restaurant.Name)
             {
                 { "id"          , restaurant.Id },
                 { "name"        , restaurant.Name },
@@ -43,8 +43,8 @@ namespace kitchenator.data.azure.Dto.Employees
                 { "streetname"  , restaurant.Address.StreetName },
                 { "streetnumber", restaurant.Address.StreetNumber },
                 { "postalcode"  , restaurant.Address.PostalCode },
-                { "countrycode" , restaurant.Address.Country.CountryCode },
-                { "countryname" , restaurant.Address.Country.CountryName },
+                { "countrycode" , restaurant.Address.City.CountryCode },
+                { "city"        , restaurant.Address.City.CityName},
             };
         }
     }

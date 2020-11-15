@@ -22,7 +22,7 @@
             {
             <tr @onclick="@(() => SelectedRestaurant.Instance = restaurant)">
                 <td>@restaurant.Name</td>
-                <td>@restaurant.City.CityName</td>
+                <td>@restaurant.Address.City.CityName</td>
                 <td>@restaurant.ChefCapacity</td>
                 <td>€@restaurant.MonthlyRent.ToString("### ### ###.00")</td>
             </tr>
@@ -62,7 +62,7 @@
     {
         if(country is { })
         {
-            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Equals(country.CountryCode)).ToList();
+            _filteredRestaurants = _restaurants.Where(r => r.Address.City.CountryCode.Equals(country.CountryCode)).ToList();
             CityFilter.Instance  = null;
         }
         else
@@ -77,10 +77,10 @@
     {
         if(CountryFilter.Instance is { })
         {
-            _filteredRestaurants = _restaurants.Where(r => r.City.CountryCode.Equals(CountryFilter.Instance.CountryCode)).ToList();
+            _filteredRestaurants = _restaurants.Where(r => r.Address.City.CountryCode.Equals(CountryFilter.Instance.CountryCode)).ToList();
             if(city is { })
             {
-                _filteredRestaurants = _filteredRestaurants.Where(r => r.City.Key.Equals(city.Key)).ToList();
+                _filteredRestaurants = _filteredRestaurants.Where(r => r.Address.City.Key.Equals(city.Key)).ToList();
             }
         }
         else

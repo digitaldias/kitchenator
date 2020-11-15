@@ -21,28 +21,32 @@ namespace kitchenator.data.azure.Dto.Realestate
                     StreetName   = entity.GetString("streetname"),
                     StreetNumber = entity.GetString("streetnumber"),
                     PostalCode   = entity.GetString("postalcode"),
-                    Country      = new Country
+                    City      = new City
                     {
-                        CountryCode = entity.GetString("countrycode"),
-                        CountryName = entity.GetString("countryname")
+                        CityName     = entity.GetString("city"),
+                        CountryCode  = entity.GetString("countrycode")
                     }
-                }
+                },
+                SeatingCapacity = entity.GetInt32("seats").GetValueOrDefault(),
+                SquareMeters = entity.GetInt32("size").GetValueOrDefault(),
             };
         }
 
         public TableEntity ToTableEntity(Restaurant restaurant)
         {
-            return new TableEntity(restaurant.City.CountryCode, restaurant.Name)
+            return new TableEntity(restaurant.Address.City.CountryCode, restaurant.Name)
             {
                 { "id"          , restaurant.Id },
                 { "name"        , restaurant.Name },
                 { "chefcapacity", restaurant.ChefCapacity },
-                { "rent"        , restaurant.MonthlyRent },
-                { "streetname"  , restaurant.Address.StreetName },
-                { "streetnumber", restaurant.Address.StreetNumber },
-                { "postalcode"  , restaurant.Address.PostalCode },
-                { "countrycode" , restaurant.Address.Country.CountryCode },
-                { "countryname" , restaurant.Address.Country.CountryName },
+                { "rent"        , (double) restaurant.MonthlyRent },
+                { "streetname"  , restaurant.Address?.StreetName ?? string.Empty },
+                { "streetnumber", restaurant.Address?.StreetNumber ?? string.Empty },
+                { "postalcode"  , restaurant.Address?.PostalCode ?? string.Empty },
+                { "countrycode" , restaurant.Address?.City.CountryCode ?? string.Empty },
+                { "city"        , restaurant.Address?.City.CityName ?? string.Empty },
+                { "seats"       , restaurant.SeatingCapacity },
+                { "size"        , restaurant.SquareMeters },
             };
         }
     }

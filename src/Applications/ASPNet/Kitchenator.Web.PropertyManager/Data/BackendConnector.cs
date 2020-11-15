@@ -1,4 +1,5 @@
 ﻿using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Entities.Realestate;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

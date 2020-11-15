@@ -3,6 +3,7 @@
 @using kitchenator.Domain.Contracts.Managers; 
 @using kitchenator.Domain.Contracts;
 @using kitchenator.Domain.Concepts.Addresses; 
+@using kitchenator.Domain.Entities.Realestate
 @inject BackendConnector backendConnector
 @inject NavigationManager NavigationManager
 @inject ICountriesLoader CountriesLoader
@@ -46,9 +47,37 @@
                 </InputSelect>
             </td>
         </tr>
+
+        <tr>
+                <td>Street name:</td>
+                <td><InputText @bind-Value="addRestaurantRequest.StreetName" /></td>
+        </tr>
+
+        <tr>
+                <td>Street number:</td>
+                <td><InputText @bind-Value="addRestaurantRequest.StreetNumber" /></td>
+        </tr>
+
+        <tr>
+                <td>ZipCode:</td>
+                <td><InputText @bind-Value="addRestaurantRequest.ZipCode" /></td>
+        </tr>
+
+
+
         <tr>
             <td>Number of Chefs capacity:</td>
             <td><InputNumber id="chefCapacity" @bind-Value="addRestaurantRequest.ChefCapacity" /></td>
+        </tr>
+
+        <tr>
+            <td>Number of guest seats:</td>
+            <td><InputNumber id="chefCapacity" @bind-Value="addRestaurantRequest.SeatingCapacity" /></td>
+        </tr>
+
+        <tr>
+            <td>Square Meters:</td>
+            <td><InputNumber id="squareMeters" @bind-Value="addRestaurantRequest.SquareMeters" /></td>
         </tr>
         <tr>
             <td>Monthly Rent:</td>
