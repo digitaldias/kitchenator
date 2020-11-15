@@ -1,7 +1,11 @@
 ﻿@using kitchenator.Domain.Concepts.Realestate;
 @using Kitchenator.Web.PropertyManager.Data;
 @using kitchenator.Domain.Concepts.Addresses; 
+@using kitchenator.Domain.Contracts;
+@using kitchenator.Domain.BoundedContexts;
+
 @inject BackendConnector connector
+@inject IModelReaderFor<Restaurant, IBoundedContext.Employment> _reader;
 
 @if(_filteredRestaurants is { })
 {
@@ -32,7 +36,6 @@
 
 
 @code {
-
     [Parameter]
     public ViewModel<Restaurant> SelectedRestaurant { get; set; }
 
@@ -47,7 +50,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _restaurants         = (await connector.GetRestaurants()).OrderBy(r => r.Name.Value).ToList();
+        _restaurants = (await _reader.GetAll()).ToList();
         _filteredRestaurants = new List<Restaurant>(_restaurants);
 
         CityFilter.OnChange     += UpdateFilteredRestaurants;

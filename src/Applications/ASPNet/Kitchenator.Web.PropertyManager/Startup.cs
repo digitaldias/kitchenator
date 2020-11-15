@@ -1,5 +1,8 @@
 using kitchenator.business;
 using kitchenator.data.azure;
+using kitchenator.Domain.BoundedContexts;
+using kitchenator.Domain.Concepts.Realestate;
+using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
 using kitchenator.Domain.Contracts.Readers;
 using Kitchenator.Web.PropertyManager.Data;
@@ -26,7 +29,8 @@ namespace Kitchenator.Web.PropertyManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            
+
+            services.AddSingleton<IModelReaderFor<Restaurant, IBoundedContext.Employment>, RestaurantRepo<IBoundedContext.Employment>>();
             services.AddSingleton<IEmployeeManager,   EmployeeManager>();
             services.AddSingleton<ICityReader,        CityReader>();
             services.AddSingleton<ICountriesReader,   CountriesReader>();
