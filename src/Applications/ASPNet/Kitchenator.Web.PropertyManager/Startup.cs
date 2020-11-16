@@ -2,7 +2,6 @@ using kitchenator.business;
 using kitchenator.data.azure;
 using kitchenator.data.azure.Dto;
 using kitchenator.data.azure.Dto.Realestate;
-using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
@@ -31,7 +30,6 @@ namespace Kitchenator.Web.PropertyManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-
             
             services.AddSingleton<IDtoResolver<Restaurant>, RestaurantResolver>();
             services.AddSingleton<IModelReaderFor<Restaurant>, ReadOnlyRepository<Restaurant>>();
