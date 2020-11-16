@@ -15,4 +15,8 @@
     <ProjectReference Include="..\..\..\Data\kitchenator.data.azure\kitchenator.data.azure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\scripts\script.js" />
+  </ItemGroup>
+
 </Project>
