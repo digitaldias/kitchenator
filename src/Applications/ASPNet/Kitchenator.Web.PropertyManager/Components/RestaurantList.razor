@@ -4,7 +4,7 @@
 
 @inject IModelReaderFor<Restaurant> reader;
 
-@if(_filteredRestaurants is { })
+@if(FilteredRestaurants.Instance is { })
 {
     <h3>Choose Restaurant</h3>
 
@@ -13,18 +13,22 @@
             <tr>
                 <th>Restaurant</th>
                 <th>City</th>
-                <th>Chef Capacity</th>
-                <th>Monthly Rent</th>
+                <th class="text-right">Chef Capacity</th>
+                <th class="text-right">m&sup2;</th>
+                <th class="text-right">Seating Capacity</th>
+                <th class="text-right">Monthly Rent</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var restaurant in _filteredRestaurants)
+            @foreach(var restaurant in FilteredRestaurants.Instance)
             {
             <tr @onclick="@(() => SelectedRestaurant.Instance = restaurant)">
                 <td>@restaurant.Name</td>
                 <td>@restaurant.Address.City.CityName</td>
-                <td>@restaurant.ChefCapacity</td>
-                <td>€@restaurant.MonthlyRent.ToString("### ### ###.00")</td>
+                <td class="text-right">@restaurant.ChefCapacity</td>
+                <td class="text-right">@restaurant.SquareMeters</td>
+                <td class="text-right">@restaurant.SeatingCapacity</td>
+                <td class="text-right">€@restaurant.MonthlyRent.ToString("### ### ###.00")</td>
             </tr>
             }
         </tbody>
@@ -45,31 +49,29 @@
     public ViewModel<List<Restaurant>> FilteredRestaurants { get;  set; }
 
     List<Restaurant> _restaurants;
-    List<Restaurant> _filteredRestaurants;
 
 
     protected override async Task OnInitializedAsync()
     {
         _restaurants = (await reader.GetAll()).ToList();
-        _filteredRestaurants = new List<Restaurant>(_restaurants);
+        FilteredRestaurants.Instance = new List<Restaurant>(_restaurants);
+        StateHasChanged();
 
         CityFilter.OnChange     += UpdateFilteredRestaurants;
         CountryFilter.OnChange  += UpdateFilteredRestaurants;
-        await Task.CompletedTask;
     }
 
     void UpdateFilteredRestaurants(object sender, Country country)
     {
         if(country is { })
         {
-            _filteredRestaurants = _restaurants.Where(r => r.Address.City.CountryCode.Equals(country.CountryCode)).ToList();
+            FilteredRestaurants.Instance = _restaurants.Where(r => r.Address.City.CountryCode.Equals(country.CountryCode)).ToList();
             CityFilter.Instance  = null;
         }
         else
         {                        
-            _filteredRestaurants = _restaurants;            
-        }
-        FilteredRestaurants = new ViewModel<List<Restaurant>>(_filteredRestaurants);
+            FilteredRestaurants.Instance = new List<Restaurant>(_restaurants);            
+        }        
         StateHasChanged();
     }
 
@@ -77,19 +79,17 @@
     {
         if(CountryFilter.Instance is { })
         {
-            _filteredRestaurants = _restaurants.Where(r => r.Address.City.CountryCode.Equals(CountryFilter.Instance.CountryCode)).ToList();
+            FilteredRestaurants.Instance = _restaurants.Where(r => r.Address.City.CountryCode.Equals(CountryFilter.Instance.CountryCode)).ToList();
             if(city is { })
             {
-                _filteredRestaurants = _filteredRestaurants.Where(r => r.Address.City.Key.Equals(city.Key)).ToList();
+                FilteredRestaurants.Instance = FilteredRestaurants.Instance.Where(r => r.Address.City.Key.Equals(city.Key)).ToList();
             }
         }
         else
         {
-            _filteredRestaurants = _restaurants;
+            FilteredRestaurants.Instance = new List<Restaurant>(_restaurants);
         }
-        StateHasChanged();
-        FilteredRestaurants = new ViewModel<List<Restaurant>>(_filteredRestaurants);
-
+        StateHasChanged();        
     }
 
     private static string GuidToShortSweetness(Restaurant restaurant)
