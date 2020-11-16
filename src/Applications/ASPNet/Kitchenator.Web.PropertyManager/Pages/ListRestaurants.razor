@@ -5,27 +5,13 @@
 @using kitchenator.Domain.Concepts.Realestate;
 @using Kitchenator.Web.PropertyManager.Components;
 
-
 @inject ICountriesLoader CountriesLoader        
-
+@inject IJSRuntime JSRuntime
 
 <h1 style="font-family: Chiller; font-size: 56pt;">Terrible Tacos Restaurant List</h1>
-@if (filteredRestaurants is { } && filteredRestaurants.Instance.Any())
-{
-    var theList = filteredRestaurants.Instance;
-    <hr />
-    <h3>Capacity and Cost</h3>
 
-    <div class="alert-info">
-        You are currently spending a total of <b>€@theList.Sum(r => r.MonthlyRent).ToString("### ### ###.0")</b> on
-        monthly rent across @theList.Count().ToString("### ###") restaurants.<br />
-        Total capacity: <b>@theList.Sum(r => r.ChefCapacity).ToString("### ###")</b> employees.
-    </div>
-    <hr />
-}
+<div id="map" style="height:500px;width:100%;"></div>
 
-
-<h3>List of Restaurants</h3>
 <EditForm EditContext="@editContext">
 
     <SelectCountryAndCity SelectedCountry="@selectedCountry" SelectedCity="@selectedCity" />
@@ -37,6 +23,21 @@
 
 </EditForm>
 
+@if (filteredRestaurants is { } && filteredRestaurants.Instance.Any())
+{
+    var theList = filteredRestaurants.Instance;
+    <hr />
+    <h3>Immediate facts</h3>
+
+    <div class="alert-info">
+        You are currently spending a total of <b>€@theList.Sum(r => r.MonthlyRent).ToString("### ### ###.0")</b> on
+        monthly rent across @theList.Count().ToString("### ###") restaurants.<br />
+        Your empire can seat upto <b>@theList.Sum(r => r.SeatingCapacity) guests</b> across a total of <b>@theList.Sum(r => r.SquareMeters)m&sup2;</b><br />
+        Total capacity: <b>@theList.Sum(r => r.ChefCapacity).ToString("### ###")</b> employees.
+    </div>
+    <hr />
+}
+
 @code
 {
     private EditContext editContext;
@@ -46,6 +47,14 @@
     private ViewModel<Restaurant> selectedRestaurant { get; set; }
     private ViewModel<Country> selectedCountry { get; set; }
     private ViewModel<City> selectedCity { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeMap", null);
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -61,6 +70,7 @@
         selectedCity        = new ViewModel<City>(new City());
 
         selectedCountry.OnChange += (s, e) => selectedCity.Instance = null;
+        filteredRestaurants.OnChange += (s, e) => StateHasChanged();
 
         return Task.CompletedTask;
     }
