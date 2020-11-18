@@ -1,13 +1,10 @@
 ﻿using Dolittle.SDK;
-using Dolittle.SDK.DependencyInversion;
-using Dolittle.SDK.Events;
 using Dolittle.SDK.Events.Store;
 using Dolittle.SDK.Tenancy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Dolittle.AspNET.ConfigurationExtensions
 {
@@ -16,8 +13,6 @@ namespace Dolittle.AspNET.ConfigurationExtensions
     /// </summary>
     public static class ClientBuilderExtensions
     {
-        private static TaskAwaiter _runningDolittleClient;
-
         /// <summary>
         /// Runs the provided Dolittle client builder expression and adds it to services as a Singleton. <br />
         /// 
