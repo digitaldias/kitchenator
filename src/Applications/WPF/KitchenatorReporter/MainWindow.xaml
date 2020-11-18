@@ -95,7 +95,7 @@
                     BorderThickness="2" 
                     CornerRadius="25" 
                     Height="80"
-                    Visibility="Visible"
+                    Visibility="Collapsed"
                     Margin="5">
                 <TextBlock Text="Manuel is out, fetching groceries"
                            HorizontalAlignment="Center"
