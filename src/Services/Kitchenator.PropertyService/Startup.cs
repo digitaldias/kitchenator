@@ -6,7 +6,6 @@ using kitchenator.data.azure;
 using kitchenator.data.azure.Dto;
 using kitchenator.data.azure.Dto.Realestate;
 using kitchenator.Domain;
-using kitchenator.Domain.BoundedContexts;
 using kitchenator.Domain.Concepts.Realestate;
 using kitchenator.Domain.Contracts;
 using kitchenator.Domain.Contracts.Managers;
